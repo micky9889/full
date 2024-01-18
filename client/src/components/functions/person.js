@@ -23,8 +23,8 @@ export const getPersonById = async (id, authentoken) => {
   });
 };
 
-export const updatePerson = async (name, id, authentoken) => {
-  return await axios.put(`${process.env.REACT_APP_API}/person/${id}`, name, {
+export const updatePerson = async (formData, id, authentoken) => {
+  return await axios.put(`${process.env.REACT_APP_API}/person/${id}`, formData, {
     headers: { authentoken },
   });
 };

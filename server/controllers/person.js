@@ -25,11 +25,25 @@ exports.read = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const { name } = req.body;
   try {
+    const { data, fileold } = req.body;
+    const newData = {
+      name: data,
+      pic: fileold,
+    };
+
+    if (typeof req.file !== "undefined") {
+      // console.log("name kao:=> ",fileold);
+      // console.log("name file:=> ",req.file);
+      newData.pic = req.file.filename;
+      await fs.unlink("./public/uploads/" + fileold, (err) => {
+        if (err) console.log(err);
+        console.log("remove succes");
+      });
+    }
     const updated = await Person.findOneAndUpdate(
       { _id: req.params.id },
-      { name: name },
+      newData,
       { new: true }
     );
     res.json(updated);
@@ -42,7 +56,6 @@ exports.update = async (req, res) => {
 exports.remove = async (req, res) => {
   try {
     const deleted = await Person.findOneAndDelete({ _id: req.params.id });
-    // console.log("delete:",deleted);
     await fs.unlink("./public/uploads/" + deleted.pic, (err) => {
       if (err) console.log(err);
       console.log("remove succes");

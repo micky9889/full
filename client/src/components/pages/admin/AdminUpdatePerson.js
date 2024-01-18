@@ -12,20 +12,22 @@ const AdminUpdatePerson = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [file, setFile] = useState(null);
+
+  const [file, setFile] = useState("");
   const [filename, setFilename] = useState("");
+  const [fileold, setFileold] = useState("");
 
   useEffect(() => {
     loadingPerson(id, user.token);
-  }, [id]);
+  }, []);
 
   const loadingPerson = (id, authentoken) => {
     getPersonById(id, authentoken)
       .then((res) => {
-        // console.log("res:",res.data);
+        // console.log("resload:",res.data);
         setFilename(res.data.pic);
+        setFileold(res.data.pic);
         setName(res.data.name);
-        console.log("useeffect:",filename);
       })
       .catch((err) => {
         console.log(err);
@@ -35,18 +37,23 @@ const AdminUpdatePerson = () => {
 
   const handleFileInputChange = (e) => {
     setFile(e.target.files[0]);
-    setFilename(e.target.files[0]?.name);
-    console.log("click:",filename);
+    setFilename(e.target.files[0].name || "");
   };
-
-  const handleBrowseClick = () => {
-    fileInputRef.current.click();
-  };
+//1
+  // const handleBrowseClick = () => {
+  //   fileInputRef.current.click();
+  // };
   const onSubmit = (e) => {
     e.preventDefault();
-
     setLoading(true);
-    updatePerson({ name }, id, user.token)
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("data", name);
+    formData.append("filename", filename);
+    formData.append("fileold", fileold);
+
+    updatePerson(formData, id, user.token)
       .then((res) => {
         loadingPerson(id, user.token);
         setLoading(false);
@@ -80,7 +87,8 @@ const AdminUpdatePerson = () => {
               />
             </div>
             <div className="mb-4">
-              <input
+              {/* 1 */}
+              {/* <input
                 ref={fileInputRef}
                 type="file"
                 className="form-control"
@@ -88,9 +96,7 @@ const AdminUpdatePerson = () => {
                 style={{ display: "none" }}
               />
               <div className="form-control mt-3 d-flex justify-content-between">
-                <label>
-                  {filename}
-                </label>
+                <label>{filename}</label>
                 <button
                   type="button"
                   className="btn btn-primary"
@@ -98,7 +104,13 @@ const AdminUpdatePerson = () => {
                 >
                   Browse
                 </button>
-              </div>
+              </div> */}
+               <input
+                ref={fileInputRef}
+                type="file"
+                className="form-control"
+                onChange={handleFileInputChange}
+              />
             </div>
             <button type="submit" className="btn btn-outline-primary">
               Update

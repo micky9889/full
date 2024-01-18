@@ -16,8 +16,8 @@ const AdminCreatePerson = () => {
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
   const [person, setPerson] = useState([]);
-  const [file, setFile] = useState("");
 
+  const [file, setFile] = useState("");
   const [uploadPercent, setUploadPercent] = useState(0);
 
   useEffect(() => {
@@ -43,11 +43,11 @@ const AdminCreatePerson = () => {
     formData.append("data", name);
     createPerson(formData, user.token, setUploadPercent)
       .then((res) => {
-        setName("");
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
         setUploadPercent(0);
+        setName("");
         loadingPerson(user.token);
         setLoading(false);
         toast.success("create " + res.data.name + " complete");
@@ -97,7 +97,7 @@ const AdminCreatePerson = () => {
       title: "Date",
       render: (record) => (
         <>
-        {/* format lao */}
+          {/* format lao */}
           {moment(record.date).locale("lo").format("llll")}
         </>
       ),
@@ -142,7 +142,7 @@ const AdminCreatePerson = () => {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
-            <div className="mb-4">
+            <div className="custom-file mb-4">
               <label>Choose File</label>
               <input
                 ref={fileInputRef}
@@ -154,6 +154,7 @@ const AdminCreatePerson = () => {
                 }}
               />
             </div>
+  
             <Progress
               percent={uploadPercent}
               status="active"

@@ -9,7 +9,7 @@ const { login, createRegister, currentUser } = require("../controllers/auth");
 const { auth,adminCheck } = require("../middleware/auth");
 
 //@route POST localhost:8000/api/regiter
-router.post("/register", createRegister);//
+router.post("/register", createRegister);
 
 //@route GET localhost:8000/api/login public
 router.post("/login", login);

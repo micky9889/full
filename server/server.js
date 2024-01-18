@@ -13,8 +13,8 @@ const { readdirSync } = require("fs"); //read routes auto
 //app
 const app = express();
 
-//create folderFile store 
-app.use(express.static(__dirname+"/public"))
+//create folderFile store
+app.use(express.static(__dirname + "/public"));
 
 //Connect Database
 mongoose
